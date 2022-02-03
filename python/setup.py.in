@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+from distutils.core import setup
+
+setup(name='Manus Python support',
+	version='${PACKAGE_VERSION}',
+	description='Python code for Manus-specific messages',
+	author='Luka Cehovin',
+	author_email='luka.cehovin@gmail.com',
+	url='https://github.com/vicoslab/manus/',
+	packages=['manus'],
+    requires=['echolib']
+)
+
+setup(name='Manus Webshell',
+	version='${PACKAGE_VERSION}',
+	description='Web interface for the Manus project',
+	author='Luka Cehovin',
+	author_email='luka.cehovin@gmail.com',
+	url='https://github.com/vicoslab/manus/',
+	packages=['manus_webshell', 'manus_webshell.static'],
+	package_data = {
+		'manus_webshell.static': ['*.*'],
+	},
+    requires=['manus' 'tornado', 'echolib', 'echocv']
+)
+
+setup(name='Manus Apps',
+	version='${PACKAGE_VERSION}',
+	description='Manus App launcher',
+	author='Luka Cehovin',
+	author_email='luka.cehovin@gmail.com',
+	url='https://github.com/vicoslab/manus/',
+	packages=['manus_apps'],
+    requires=['manus', 'echolib', 'echocv']
+)
+
+setup(name='Manus Starter',
+	version='${PACKAGE_VERSION}',
+	description='Manus environment starter',
+	author='Luka Cehovin',
+	author_email='luka.cehovin@gmail.com',
+	url='https://github.com/vicoslab/manus/',
+	packages=['manus_starter'],
+    requires=['manus']
+)
+
+

@@ -1,0 +1,56 @@
+description: "Manus Simulator using Image"
+log: "/var/log/manus/"
+#user: "manus"
+#group" : ["manus"]
+#parameters:
+#    manus.camera: false
+#    manus.manipulator: false
+environment:
+    MANUS_ROOT: "/usr/local"
+    ECHOLIB_SOCKET: "/tmp/echo.sock"
+plugins:
+    - wait
+    - debug
+    - echolib.ignition.Mapping
+programs:
+    echo:
+        command: "echorouter"
+        required: true
+        restart: false
+        wait: 1
+    cameraserver:
+        command: "echo_image ../static/board1.jpg"
+        required: false
+        restart: true
+        console: true
+        debug: false
+        directory: "${MANUS_ROOT}/share/manus/camera"
+        depends: [echo]
+        environment: 
+            "LIMIT_FPS": "10"
+        remap:
+            camera: camera0.image
+            intrinsics: camera0.parameters
+        wait: 0.1
+    artracker:
+        command: "manus_artrack board1.yml"
+        directory: "${MANUS_ROOT}/share/manus/camera"
+        required: false
+        restart: true
+        depends: [echo, cameraserver]
+        remap:
+            camera: camera0.image
+            intrinsics: camera0.parameters
+            location: camera0.location
+    manipulator:
+        command: "manus_dummy_manipulator manipulator1.yaml"
+        depends: [echo]
+        directory: "${MANUS_ROOT}/share/manus/models"
+        restart: false
+        wait: 1
+        remap:
+            state: manipulator0.state
+            description: manipulator0.description
+            plan: manipulator0.plan
+            planstate: manipulator0.planstate
+            trajectory: manipulator0.trajectory

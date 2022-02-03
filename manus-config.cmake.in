@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+set_and_check(manus_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(manus_LIBRARY_DIRS "@PACKAGE_LIB_INSTALL_DIR@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/manus-targets.cmake")
+
+set(manus_LIBRARIES manus)
+set(manus_FOUND TRUE)
