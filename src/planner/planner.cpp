@@ -48,6 +48,35 @@ public:
 
 protected:
 
+	Segment get_kdl_segment(JointDescription& joint) {
+		if (joint.type == JOINTTYPE_ROTATION) {
+			switch (joint.axis) {
+				case JOINTAXIS_X:
+					return Segment(Joint(Joint::RotX), Frame(Rotation::RPY(0.0, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
+				break;
+				case JOINTAXIS_Y:
+					return Segment(Joint(Joint::RotY), Frame(Rotation::RPY(joint.rr, 0.0, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
+				break;
+				case JOINTAXIS_Z:
+					return Segment(Joint(Joint::RotZ), Frame(Rotation::RPY(joint.rr, joint.rp, 0.0), Vector(joint.tx, joint.ty, joint.tz)));
+				break;
+			}
+		} else if (joint.type == JOINTTYPE_ROTATION) {
+			switch (joint.axis) {
+				case JOINTAXIS_X:
+					return Segment(Joint(Joint::TransX), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(0.0, joint.ty, joint.tz)));
+				break;
+				case JOINTAXIS_Y:
+					return Segment(Joint(Joint::TransY), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, 0.0, joint.tz)));
+				break;
+				case JOINTAXIS_Z:
+					return Segment(Joint(Joint::TransZ), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, 0.0)));
+				break;
+			}
+		} 
+		return Segment(Joint(Joint::None), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
+	}
+
 	void on_description(shared_ptr<ManipulatorDescription> desc) {
 
 		kinematic_chain = Chain();
@@ -67,24 +96,44 @@ protected:
 
 			switch (joint.type) {
 			case JOINTTYPE_ROTATION: {
-				kinematic_chain.addSegment(Segment(Joint(Joint::RotZ), Frame::DH(joint.dh_a, joint.dh_alpha, joint.dh_d, 0)));
-				lmin.push_back(joint.dh_min);
-				lmax.push_back(joint.dh_max);
-				spos.push_back(joint.dh_theta);
+				kinematic_chain.addSegment(get_kdl_segment(joint));
+				lmin.push_back(joint.min);
+				lmax.push_back(joint.max);
+				switch (joint.axis) {
+					case JOINTAXIS_X:
+						spos.push_back(joint.rr);
+					break;
+					case JOINTAXIS_Y:
+						spos.push_back(joint.rp);
+					break;
+					case JOINTAXIS_Z:
+						spos.push_back(joint.ry);
+					break;
+				}
 				break;
 			}
 			case JOINTTYPE_TRANSLATION: {
-				kinematic_chain.addSegment(Segment(Joint(Joint::TransZ), Frame::DH(joint.dh_a, joint.dh_alpha, 0, joint.dh_theta)));
-				lmin.push_back(joint.dh_min);
-				lmax.push_back(joint.dh_max);
-				spos.push_back(joint.dh_d);
+				kinematic_chain.addSegment(get_kdl_segment(joint));
+				lmin.push_back(joint.min);
+				lmax.push_back(joint.max);
+				switch (joint.axis) {
+					case JOINTAXIS_X:
+						spos.push_back(joint.tx);
+					break;
+					case JOINTAXIS_Y:
+						spos.push_back(joint.ty);
+					break;
+					case JOINTAXIS_Z:
+						spos.push_back(joint.tz);
+					break;
+				}
 				break;
 			}
 			case JOINTTYPE_GRIPPER: {
 				gripper = j;
 			}
 			case JOINTTYPE_FIXED: {
-				kinematic_chain.addSegment(Segment(Joint(Joint::None), Frame::DH(joint.dh_a, joint.dh_alpha, joint.dh_d, joint.dh_theta)));
+				kinematic_chain.addSegment(get_kdl_segment(joint));
 				break;
 			}
 			}

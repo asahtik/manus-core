@@ -47,7 +47,7 @@ SimulatedManipulator::SimulatedManipulator(const string& model, float speed) : s
     }
 
     for (int i = 0; i < _description.joints.size(); i++) {
-        _state.joints.push_back(joint_state(_description.joints[i], _description.joints[i].dh_safe));
+        _state.joints.push_back(joint_state(_description.joints[i], _description.joints[i].safe));
     }
 
 }
@@ -104,11 +104,11 @@ bool SimulatedManipulator::move(int joint, float position, float speed) {
     if (joint < 0 || joint >= size())
         return false;
 
-    if (_description.joints[joint].dh_min > position)
-        position = _description.joints[joint].dh_min;
+    if (_description.joints[joint].min > position)
+        position = _description.joints[joint].min;
 
-    if (_description.joints[joint].dh_max < position)
-        position = _description.joints[joint].dh_max;
+    if (_description.joints[joint].max < position)
+        position = _description.joints[joint].max;
 
     _state.joints[joint].goal = position;
     _state.joints[joint].speed = speed;

@@ -2,19 +2,23 @@ import "geometry.msg";
 
 enumerate ManipulatorStateType { UNKNOWN, CONNECTED, PASSIVE, ACTIVE, CALIBRATION }
 enumerate JointType { ROTATION, TRANSLATION, GRIPPER, FIXED }
+enumerate JointAxis { X, Y, Z }
 enumerate JointStateType { IDLE, MOVING, ERROR }
 
 enumerate PlanStateType { PLANNING, FAILED, PLANNED, RUNNING, STOPPED, COMPLETED }
  
 structure JointDescription {
 	JointType type;
-	float dh_theta;
-	float dh_alpha;
-	float dh_d;
-	float dh_a;
-	float dh_min;
-	float dh_max;
-	float dh_safe;
+	JointAxis axis;
+	float tx;
+	float ty;
+	float tz;
+	float rr;
+	float rp;
+	float ry;
+	float min;
+	float max;
+	float safe;
 }
 
 structure JointState {

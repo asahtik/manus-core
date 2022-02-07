@@ -118,24 +118,43 @@ class Manipulator(object):
         if self.description is None or joint < 0 or joint >= len(self.state.joints):
             return origin
         for j in xrange(0, joint+1):
-            dh_a, dh_alpha, dh_d, dh_theta = self._description_data.joints[j].dh_a, \
-                self._description_data.joints[j].dh_alpha, \
-                self._description_data.joints[j].dh_d, \
-                self._description_data.joints[j].dh_theta
+            tx, ty, tz, rr, rp, ry = \
+                self._description_data.joints[j].tx, \
+                self._description_data.joints[j].ty, \
+                self._description_data.joints[j].tz, \
+                self._description_data.joints[j].rr, \
+                self._description_data.joints[j].rp, \
+                self._description_data.joints[j].ry
 
             if self._description_data.joints[j].type == messages.JointType.ROTATION:
-                dh_theta = self.state.joints[j].position
+                if self._description_data.joints[j].axis == messages.JointAxis.X:
+                    rr = self.state.joints[j].position
+                elif self._description_data.joints[j].axis == messages.JointAxis.Y:
+                    rp = self.state.joints[j].position
+                elif self._description_data.joints[j].axis == messages.JointAxis.Z:
+                    ry = self.state.joints[j].position
             elif self._description_data.joints[j].type == messages.JointType.TRANSLATION:
-                dh_d = self.state.joints[j].position
+                if self._description_data.joints[j].axis == messages.JointAxis.X:
+                    tx = self.state.joints[j].position
+                elif self._description_data.joints[j].axis == messages.JointAxis.Y:
+                    ty = self.state.joints[j].position
+                elif self._description_data.joints[j].axis == messages.JointAxis.Z:
+                    tz = self.state.joints[j].position
 
-            ct = np.cos(dh_theta)
-            st = np.sin(dh_theta)
-            ca = np.cos(dh_alpha)
-            sa = np.sin(dh_alpha)
+            sg = np.cos(rr)
+            cg = np.cos(rr)
+            sb = np.cos(rp)
+            cb = np.cos(rp)
+            sa = np.cos(ry)
+            ca = np.cos(ry)
 
-            transform = np.array(((ct, -st * ca, st * sa, dh_a * ct), \
-                             (st, ct * ca, -ct * sa, dh_a * st), (0, sa, ca, dh_d), (0, 0, 0, 1)))
+            transform = np.array(( \
+                (ca * cb, ca * sb * sg - sa * cg, ca * sb * cg + sa * sg, tx), \
+                (sa * cb, sa * sb * sg + ca * cg, sa * sb * cg - ca * sg, ty), \
+                (-sb, cb * sg, cb * cg, tz) \
+                (0, 0, 0, 1) \
+            ))
 
-            origin = np.matmul(origin, transform)
+            origin = np.matmul(transform, origin)
 
         return origin

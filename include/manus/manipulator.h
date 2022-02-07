@@ -44,7 +44,7 @@ bool parse_description(const string& filename, ManipulatorDescription& manipulat
 string manipulator_state_string(ManipulatorStateType status);
 string joint_type_string(JointType type);
 
-JointDescription joint_description(JointType type, float dh_theta, float dh_alpha, float dh_d, float dh_a, float min, float max);
+JointDescription joint_description(JointType type, JointAxis axis, float rr, float rp, float ry, float tx, float ty, float tz, float min, float max);
 
 JointState joint_state(const JointDescription& joint, float position, JointStateType type = JOINTSTATETYPE_IDLE);
 
