@@ -2,7 +2,7 @@ import "geometry.msg";
 
 enumerate ManipulatorStateType { UNKNOWN, CONNECTED, PASSIVE, ACTIVE, CALIBRATION }
 enumerate JointType { ROTATION, TRANSLATION, GRIPPER, FIXED }
-enumerate JointAxis { X, Y, Z }
+enumerate JointAxis { X, Y, Z, NONE }
 enumerate JointStateType { IDLE, MOVING, ERROR }
 
 enumerate PlanStateType { PLANNING, FAILED, PLANNED, RUNNING, STOPPED, COMPLETED }

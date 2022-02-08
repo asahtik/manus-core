@@ -44,52 +44,93 @@ string joint_type_string(JointType type) {
     return "unknown";
 }
 
+JointAxis joint_axis_enum(string axis) {
+    if (axis == "x") return JOINTAXIS_X;
+    else if (axis == "y") return JOINTAXIS_Y;
+    else if (axis == "none") return JOINTAXIS_NONE;
+    else return JOINTAXIS_Z;
+}
+
 bool parse_joint(const YAML::Node& node, JointDescription& joint) {
     string type = node["type"].as<string>();
     if (type == "rotation") {
         joint.type = JOINTTYPE_ROTATION;
-        joint.dh_alpha = DEGREE_TO_RADIAN(node["dh"]["alpha"].as<float>());
-        joint.dh_d = node["dh"]["d"].as<float>();
-        joint.dh_a = node["dh"]["a"].as<float>();
-        joint.dh_min = DEGREE_TO_RADIAN(node["min"].as<float>());
-        joint.dh_max = DEGREE_TO_RADIAN(node["max"].as<float>());
-        joint.dh_safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
+        joint.axis = joint_axis_enum(node["axis"].as<string>());
+        joint.tx = node["transform"]["tx"].as<float>();
+        joint.ty = node["transform"]["ty"].as<float>();
+        joint.tz = node["transform"]["tz"].as<float>();
+        joint.rr = DEGREE_TO_RADIAN(node["transform"]["rr"].as<float>());
+        joint.rp = DEGREE_TO_RADIAN(node["transform"]["rp"].as<float>());
+        joint.ry = DEGREE_TO_RADIAN(node["transform"]["ry"].as<float>());
+        joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
+        joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
+        joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
-        joint.dh_theta = joint.dh_safe;
+        switch (joint.axis) {
+            case: JOINTAXIS_X:
+                joint.rr = joint.safe;
+            break;
+            case: JOINTAXIS_Y:
+                joint.rp = joint.safe;
+            break;
+            case: JOINTAXIS_Z:
+                joint.ry = joint.safe;
+            break;
+        }
         return true;
     }
     if (type == "translation") {
         joint.type = JOINTTYPE_TRANSLATION;
-        joint.dh_theta = DEGREE_TO_RADIAN(node["dh"]["theta"].as<float>());
-        joint.dh_alpha = DEGREE_TO_RADIAN(node["dh"]["alpha"].as<float>());
-        joint.dh_a = node["dh"]["a"].as<float>();
-        joint.dh_min = node["min"].as<float>();
-        joint.dh_max = node["max"].as<float>();
-        joint.dh_safe = node["safe"].as<float>();
+        joint.axis = joint_axis_enum(node["axis"].as<string>();
+        joint.tx = node["transform"]["tx"].as<float>();
+        joint.ty = node["transform"]["ty"].as<float>();
+        joint.tz = node["transform"]["tz"].as<float>();
+        joint.rr = DEGREE_TO_RADIAN(node["transform"]["rr"].as<float>());
+        joint.rp = DEGREE_TO_RADIAN(node["transform"]["rp"].as<float>());
+        joint.ry = DEGREE_TO_RADIAN(node["transform"]["ry"].as<float>());
+        joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
+        joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
+        joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
-        joint.dh_d = joint.dh_safe;
+        switch (joint.axis) {
+            case: JOINTAXIS_X:
+                joint.tx = joint.safe;
+            break;
+            case: JOINTAXIS_Y:
+                joint.ty = joint.safe;
+            break;
+            case: JOINTAXIS_Z:
+                joint.tz = joint.safe;
+            break;
+        }
         return true;
     }
     if (type == "fixed") {
         joint.type = JOINTTYPE_FIXED;
-        joint.dh_theta = DEGREE_TO_RADIAN(node["dh"]["theta"].as<float>());
-        joint.dh_alpha = DEGREE_TO_RADIAN(node["dh"]["alpha"].as<float>());
-        joint.dh_d = node["dh"]["d"].as<float>();
-        joint.dh_a = node["dh"]["a"].as<float>();
-        joint.dh_min = 0;
-        joint.dh_max = 0;
-        joint.dh_safe = 0;
+        joint.axis = JOINTAXIS_NONE;
+        joint.tx = node["transform"]["tx"].as<float>();
+        joint.ty = node["transform"]["ty"].as<float>();
+        joint.tz = node["transform"]["tz"].as<float>();
+        joint.rr = DEGREE_TO_RADIAN(node["transform"]["rr"].as<float>());
+        joint.rp = DEGREE_TO_RADIAN(node["transform"]["rp"].as<float>());
+        joint.ry = DEGREE_TO_RADIAN(node["transform"]["ry"].as<float>());
+        joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
+        joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
+        joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
         return true;
     }
     if (type == "gripper") {
         joint.type = JOINTTYPE_GRIPPER;
-        joint.dh_theta = 0;
-        joint.dh_alpha = 0;
-        joint.dh_d = 0;
-        joint.dh_a = 0;
-        joint.dh_min = node["min"].as<float>();
-        joint.dh_max = node["max"].as<float>();
-        joint.dh_safe = 0;
+        joint.axis = JOINTAXIS_NONE;
+        joint.tx = node["transform"]["tx"].as<float>();
+        joint.ty = node["transform"]["ty"].as<float>();
+        joint.tz = node["transform"]["tz"].as<float>();
+        joint.rr = DEGREE_TO_RADIAN(node["transform"]["rr"].as<float>());
+        joint.rp = DEGREE_TO_RADIAN(node["transform"]["rp"].as<float>());
+        joint.ry = DEGREE_TO_RADIAN(node["transform"]["ry"].as<float>());
+        joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
+        joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
+        joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
         return true;
     }
     return false;
@@ -114,15 +155,18 @@ bool parse_description(const string& filename, ManipulatorDescription& manipulat
     return true;
 }
 
-JointDescription joint_description(JointType type, float dh_theta, float dh_alpha, float dh_d, float dh_a, float min, float max) {
+JointDescription joint_description(JointType type, JointAxis axis, float tx, float ty, float tz float rr, float rp, float ry, float min, float max) {
     JointDescription joint;
     joint.type = type;
-    joint.dh_theta = DEGREE_TO_RADIAN(dh_theta);
-    joint.dh_alpha = DEGREE_TO_RADIAN(dh_alpha);
-    joint.dh_d = dh_d;
-    joint.dh_a = dh_a;
-    joint.dh_min = type == JOINTTYPE_ROTATION ? DEGREE_TO_RADIAN(min) : min;
-    joint.dh_max = type == JOINTTYPE_ROTATION ? DEGREE_TO_RADIAN(max) : max;
+    joint.axis = axis;
+    joint.tx = tx;
+    joint.ty = ty;
+    joint.tz = tz;
+    joint.rr = DEGREE_TO_RADIAN(rr);
+    joint.rp = DEGREE_TO_RADIAN(rp);
+    joint.ry = DEGREE_TO_RADIAN(ry);
+    joint.min = type == JOINTTYPE_ROTATION ? DEGREE_TO_RADIAN(min) : min;
+    joint.max = type == JOINTTYPE_ROTATION ? DEGREE_TO_RADIAN(max) : max;
     return joint;
 }
 
@@ -200,7 +244,7 @@ void ManipulatorManager::push(shared_ptr<Plan> t) {
             cout << "Moving to safe position" << endl;
             for (size_t j = 0; j < manipulator->size(); j++) {
                 JointCommand tmp;
-                tmp.goal = description.joints[j].dh_safe;
+                tmp.goal = description.joints[j].safe;
                 tmp.speed = 1;
                 t->segments[s].joints.push_back(tmp);
             }
@@ -213,16 +257,16 @@ void ManipulatorManager::push(shared_ptr<Plan> t) {
         for (size_t j = 0; j < manipulator->size(); j++) {
             float goal = t->segments[s].joints[j].goal;
             if (description.joints[j].type == JOINTTYPE_ROTATION) {
-                goal = normalizeAngle(goal, description.joints[j].dh_min, description.joints[j].dh_max);
+                goal = normalizeAngle(goal, description.joints[j].min, description.joints[j].max);
             }
 
-            if (goal < description.joints[j].dh_min ||
-                    t->segments[s].joints[j].goal > description.joints[j].dh_max) {
+            if (goal < description.joints[j].min ||
+                    t->segments[s].joints[j].goal > description.joints[j].max) {
                 if (description.joints[j].type != JOINTTYPE_FIXED) {
-                    cout << "Warning: wrong joint " << j << " goal " << goal << " out of range " << description.joints[j].dh_min << " to " << description.joints[j].dh_max << ". Truncating." << endl;
-                    goal = max(description.joints[j].dh_min, min(description.joints[j].dh_max, goal));
+                    cout << "Warning: wrong joint " << j << " goal " << goal << " out of range " << description.joints[j].min << " to " << description.joints[j].max << ". Truncating." << endl;
+                    goal = max(description.joints[j].min, min(description.joints[j].max, goal));
                 } else {
-                    goal = description.joints[j].dh_min;
+                    goal = description.joints[j].min;
                 }
             }
             t->segments[s].joints[j].goal = goal;
