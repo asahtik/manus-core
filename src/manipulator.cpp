@@ -93,13 +93,13 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
         switch (joint.axis) {
-            case: JOINTAXIS_X:
+            case JOINTAXIS_X:
                 joint.tx = joint.safe;
             break;
-            case: JOINTAXIS_Y:
+            case JOINTAXIS_Y:
                 joint.ty = joint.safe;
             break;
-            case: JOINTAXIS_Z:
+            case JOINTAXIS_Z:
                 joint.tz = joint.safe;
             break;
         }
