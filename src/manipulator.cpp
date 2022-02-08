@@ -67,13 +67,13 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
         switch (joint.axis) {
-            case: JOINTAXIS_X:
+            case JOINTAXIS_X:
                 joint.rr = joint.safe;
             break;
-            case: JOINTAXIS_Y:
+            case JOINTAXIS_Y:
                 joint.rp = joint.safe;
             break;
-            case: JOINTAXIS_Z:
+            case JOINTAXIS_Z:
                 joint.ry = joint.safe;
             break;
         }
@@ -81,7 +81,7 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
     }
     if (type == "translation") {
         joint.type = JOINTTYPE_TRANSLATION;
-        joint.axis = joint_axis_enum(node["axis"].as<string>();
+        joint.axis = joint_axis_enum(node["axis"].as<string>());
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
         joint.tz = node["transform"]["tz"].as<float>();
@@ -155,7 +155,7 @@ bool parse_description(const string& filename, ManipulatorDescription& manipulat
     return true;
 }
 
-JointDescription joint_description(JointType type, JointAxis axis, float tx, float ty, float tz float rr, float rp, float ry, float min, float max) {
+JointDescription joint_description(JointType type, JointAxis axis, float tx, float ty, float tz, float rr, float rp, float ry, float min, float max) {
     JointDescription joint;
     joint.type = type;
     joint.axis = axis;
