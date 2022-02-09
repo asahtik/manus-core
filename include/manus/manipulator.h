@@ -65,19 +65,19 @@ protected:
 
 	virtual void on_subscribers(int s);
 
-private:
-
     void step(bool force = false);
+
+    shared_ptr<Manipulator> manipulator;
+
+    shared_ptr<Plan> plan;
+
+private:
 
     SharedClient client;
 
     int subscribers = 0;
 
 	SubscriptionWatcher watcher;
-
-    shared_ptr<Manipulator> manipulator;
-
-    shared_ptr<Plan> plan;
 
     SharedTypedPublisher<ManipulatorState> state_publisher;
     SharedTypedPublisher<PlanState> planstate_publisher;
@@ -86,6 +86,7 @@ private:
 
 };
 
+bool close_enough(float a, float b);
 
 #endif
 
