@@ -178,7 +178,7 @@ JointState joint_state(const JointDescription& joint, float position, JointState
     return state;
 }
 
-bool close_enough(float a, float b) {
+bool ManipulatorManager::close_enough(float a, float b) {
     return std::fabs(a - b) < 0.05;
 }
 

@@ -71,6 +71,8 @@ protected:
 
     shared_ptr<Plan> plan;
 
+    bool close_enough(float a, float b);
+
 private:
 
     SharedClient client;
@@ -85,8 +87,6 @@ private:
     SharedTypedSubscriber<Plan> plan_listener;
 
 };
-
-bool close_enough(float a, float b);
 
 #endif
 
