@@ -71,6 +71,8 @@ protected:
 
     shared_ptr<Plan> plan;
 
+    SharedTypedPublisher<PlanState> planstate_publisher;
+
     bool close_enough(float a, float b);
 
 private:
@@ -82,7 +84,6 @@ private:
 	SubscriptionWatcher watcher;
 
     SharedTypedPublisher<ManipulatorState> state_publisher;
-    SharedTypedPublisher<PlanState> planstate_publisher;
     shared_ptr<StaticPublisher<ManipulatorDescription> > description_publisher;
     SharedTypedSubscriber<Plan> plan_listener;
 
