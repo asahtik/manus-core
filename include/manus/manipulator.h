@@ -29,7 +29,7 @@ public:
 
 	virtual ManipulatorDescription describe() = 0;
 	virtual ManipulatorState state() = 0;
-    
+
     void prepareNewGoal(bool begin_trajectory = false);
 };
 
@@ -68,14 +68,6 @@ protected:
 
     void step(bool force = false);
 
-    shared_ptr<Manipulator> manipulator;
-
-    shared_ptr<Plan> plan;
-
-    SharedTypedPublisher<PlanState> planstate_publisher;
-
-    bool close_enough(float a, float b);
-
 private:
 
     SharedClient client;
@@ -84,7 +76,12 @@ private:
 
 	SubscriptionWatcher watcher;
 
+    shared_ptr<Manipulator> manipulator;
+
+    shared_ptr<Plan> plan;
+
     SharedTypedPublisher<ManipulatorState> state_publisher;
+    SharedTypedPublisher<PlanState> planstate_publisher;
     shared_ptr<StaticPublisher<ManipulatorDescription> > description_publisher;
     SharedTypedSubscriber<Plan> plan_listener;
 

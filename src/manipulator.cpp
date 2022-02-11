@@ -182,7 +182,7 @@ void Manipulator::prepareNewGoal(bool begin_trajectory) {
 
 }
 
-bool ManipulatorManager::close_enough(float a, float b) {
+bool close_enough(float a, float b) {
     return std::fabs(a - b) < 0.05;
 }
 
