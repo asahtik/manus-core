@@ -178,6 +178,10 @@ JointState joint_state(const JointDescription& joint, float position, JointState
     return state;
 }
 
+void Manipulator::prepareNewGoal(bool begin_trajectory) {
+
+}
+
 bool ManipulatorManager::close_enough(float a, float b) {
     return std::fabs(a - b) < 0.05;
 }
@@ -323,20 +327,24 @@ void ManipulatorManager::step(bool force) {
     }
 
     if (goal || force) {
-
-        if (plan->segments.size() == 0) {
+        int planSize = plan->segments.size();
+        if (planSize == 0) {
             PlanState state;
             state.identifier = plan->identifier;
             state.type = PLANSTATETYPE_COMPLETED;
             planstate_publisher->send(state);
             plan.reset();
+
+            lastPlanSize = 0;
             return;
         }
 
+        manipulator->prepareNewGoal(lastPlanSize == 0);
         for (size_t i = 0; i < manipulator->size(); i++) {
             manipulator->move(i, plan->segments[0].joints[i].goal, plan->segments[0].joints[i].speed);
         }
 
+        lastPlanSize = planSize;
         plan->segments.erase(plan->segments.begin());
     }
 

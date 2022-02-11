@@ -29,7 +29,8 @@ public:
 
 	virtual ManipulatorDescription describe() = 0;
 	virtual ManipulatorState state() = 0;
-
+    
+    void prepareNewGoal(bool begin_trajectory = false);
 };
 
 class ManipulatorException : public std::runtime_error
@@ -86,6 +87,8 @@ private:
     SharedTypedPublisher<ManipulatorState> state_publisher;
     shared_ptr<StaticPublisher<ManipulatorDescription> > description_publisher;
     SharedTypedSubscriber<Plan> plan_listener;
+
+    volatile int lastPlanSize = 0;
 
 };
 
