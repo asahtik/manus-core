@@ -66,9 +66,9 @@ protected:
 
 	virtual void on_subscribers(int s);
 
-    void step(bool force = false);
-
 private:
+
+    void step(bool force = false);
 
     SharedClient client;
 
