@@ -17,14 +17,14 @@ programs:
         command: "echorouter"
         required: true
         restart: false
+        console: true
         wait: 1
     cameraserver:
-        command: "echo_image ../static/board1.jpg"
+        command: "echo_image board1.jpg"
         required: false
         restart: true
         console: true
-        debug: false
-        directory: "${MANUS_ROOT}/share/manus/camera"
+        directory: "${MANUS_ROOT}/share/manus/static/"
         depends: [echo]
         environment: 
             "LIMIT_FPS": "10"
@@ -36,7 +36,10 @@ programs:
         command: "manus_artrack board1.yml"
         directory: "${MANUS_ROOT}/share/manus/camera"
         required: false
-        restart: true
+        restart: false
+        ignore: true
+        console: true
+        debug: false
         depends: [echo, cameraserver]
         remap:
             camera: camera0.image
@@ -47,6 +50,7 @@ programs:
         depends: [echo]
         directory: "${MANUS_ROOT}/share/manus/models"
         restart: false
+        console: true
         wait: 1
         remap:
             state: manipulator0.state

@@ -24,8 +24,7 @@ bool debug = false;
 
 Ptr<CameraModel> model;
 Ptr<Scene> scene;
-Header header_current;
-Mat image_current;
+shared_ptr<Frame> frame_current;
 Mat image_gray;
 Ptr<BackgroundSubtractorMOG2> scene_model;
 int force_update_counter;
@@ -91,9 +90,7 @@ bool scene_change(Mat &image)
 
 void handle_frame(shared_ptr<Frame> frame)
 {
-
-	header_current = frame->header;
-	image_current = frame->image->asMat();
+	frame_current = frame;
 }
 
 SharedTypedPublisher<CameraExtrinsics> location_publisher;
@@ -297,8 +294,10 @@ int main(int argc, char **argv)
 		if (!echolib::wait(100))
 			break;
 
-		if (!image_current.empty())
+		if (frame_current)
 		{
+
+			Mat image_current = frame_current->image->asMat();
 
 			if (scene_change(image_current))
 			{
@@ -355,7 +354,7 @@ int main(int argc, char **argv)
 			if (localized)
 			{
 				Mat rotation;
-				last_location.header = header_current;
+				last_location.header = frame_current->header;
 				Rodrigues(localization->getCameraPosition().rotation, rotation);
 				last_location.rotation = make_shared<Tensor>(rotation);
 				last_location.translation = make_shared<Tensor>(localization->getCameraPosition().translation);
