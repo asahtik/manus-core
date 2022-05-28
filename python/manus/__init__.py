@@ -141,20 +141,26 @@ class Manipulator(object):
                 elif self._description_data.joints[j].axis == messages.JointAxis.Z:
                     tz = self.state.joints[j].position
 
-            sg = np.cos(rr)
-            cg = np.cos(rr)
-            sb = np.cos(rp)
-            cb = np.cos(rp)
-            sa = np.cos(ry)
-            ca = np.cos(ry)
+            ca1 = np.cos(ry)
+            sa1 = np.sin(ry)
+            cb1 = np.cos(rp)
+            sb1 = np.sin(rp)
+            cc1 = np.cos(rr)
+            sc1 = np.sin(rr)
 
-            transform = np.array(( \
-                (ca * cb, ca * sb * sg - sa * cg, ca * sb * cg + sa * sg, tx), \
-                (sa * cb, sa * sb * sg + ca * cg, sa * sb * cg - ca * sg, ty), \
-                (-sb, cb * sg, cb * cg, tz) \
+            rotation = np.array(( \
+                (ca1*cb1, ca1*sb1*sc1 - sa1*cc1, ca1*sb1*cc1 + sa1*sc1, 0), \
+                (sa1*cb1, sa1*sb1*sc1 + ca1*cc1, sa1*sb1*cc1 - ca1*sc1, 0), \
+                (-sb1, cb1*sc1, cb1*cc1, 0), \
+                (0, 0, 0, 1) \
+            ))
+            translation = np.array(( \
+                (0, 0, 0, tx), \
+                (0, 0, 0, ty), \
+                (0, 0, 0, tz), \
                 (0, 0, 0, 1) \
             ))
 
-            origin = np.matmul(transform, origin)
+            origin = np.add(np.matmul(rotation, origin), translation)
 
         return origin
