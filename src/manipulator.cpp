@@ -119,8 +119,8 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
     if (type == "gripper") {
         joint.type = JOINTTYPE_GRIPPER;
         joint.axis = JOINTAXIS_NONE;
-        joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
-        joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
+        joint.min = node["min"].as<float>();
+        joint.max = node["max"].as<float>();
         return true;
     }
     return false;

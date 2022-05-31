@@ -2,7 +2,7 @@ name: "Manus M1"
 version: 1.0
 joints:
   - type: "rotation"
-    axis: "z":
+    axis: "z"
     transform:
       tx: 0
       ty: 0
@@ -14,7 +14,7 @@ joints:
     max: 180
     safe: 0
   - type: "rotation"
-    axis: "z":
+    axis: "z"
     transform:
       tx: 108
       ty: 0
@@ -26,7 +26,7 @@ joints:
     max: 180
     safe: 150
   - type: "rotation"
-    axis: "z":
+    axis: "z"
     transform:
       tx: 112
       ty: 0
@@ -38,7 +38,7 @@ joints:
     max: 110
     safe: -90
   - type: "rotation"
-    axis: "z":
+    axis: "z"
     transform:
       tx: 20
       ty: 0
@@ -50,7 +50,7 @@ joints:
     max: 180
     safe: -70
   - type: "fixed"
-    axis: "z":
+    axis: "z"
     transform:
       tx: 0
       ty: 0
@@ -59,7 +59,7 @@ joints:
       rp: 0
       ry: 90
   - type: "rotation"
-    axis: "z":
+    axis: "z"
     transform:
       tx: 0
       ty: 0
