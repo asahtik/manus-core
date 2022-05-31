@@ -54,7 +54,7 @@ JointAxis joint_axis_enum(string axis) {
 bool parse_joint(const YAML::Node& node, JointDescription& joint) {
     string type = node["type"].as<string>();
     if (type == "rotation") {
-        joint.type = ROTATION;
+        joint.type = JOINTTYPE_ROTATION;
         joint.axis = joint_axis_enum(node["axis"].as<string>());
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
@@ -67,20 +67,20 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
         switch (joint.axis) {
-            case X:
+            case JOINTAXIS_X:
                 joint.rr = joint.safe;
             break;
-            case Y:
+            case JOINTAXIS_Y:
                 joint.rp = joint.safe;
             break;
-            case Z:
+            case JOINTAXIS_Z:
                 joint.ry = joint.safe;
             break;
         }
         return true;
     }
     if (type == "translation") {
-        joint.type = TRANSLATION;
+        joint.type = JOINTTYPE_TRANSLATION;
         joint.axis = joint_axis_enum(node["axis"].as<string>());
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
@@ -93,21 +93,21 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
         switch (joint.axis) {
-            case X:
+            case JOINTAXIS_X:
                 joint.tx = joint.safe;
             break;
-            case Y:
+            case JOINTAXIS_Y:
                 joint.ty = joint.safe;
             break;
-            case Z:
+            case JOINTAXIS_Z:
                 joint.tz = joint.safe;
             break;
         }
         return true;
     }
     if (type == "fixed") {
-        joint.type = FIXED;
-        joint.axis = NONE;
+        joint.type = JOINTTYPE_FIXED;
+        joint.axis = JOINTAXIS_NONE;
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
         joint.tz = node["transform"]["tz"].as<float>();
@@ -117,8 +117,8 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         return true;
     }
     if (type == "gripper") {
-        joint.type = GRIPPER;
-        joint.axis = NONE;
+        joint.type = JOINTTYPE_GRIPPER;
+        joint.axis = JOINTAXIS_NONE;
         joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
         joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
         return true;
