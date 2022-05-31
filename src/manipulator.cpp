@@ -54,7 +54,7 @@ JointAxis joint_axis_enum(string axis) {
 bool parse_joint(const YAML::Node& node, JointDescription& joint) {
     string type = node["type"].as<string>();
     if (type == "rotation") {
-        joint.type = JOINTTYPE_ROTATION;
+        joint.type = ROTATION;
         joint.axis = joint_axis_enum(node["axis"].as<string>());
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
@@ -67,20 +67,20 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
         switch (joint.axis) {
-            case JOINTAXIS_X:
+            case X:
                 joint.rr = joint.safe;
             break;
-            case JOINTAXIS_Y:
+            case Y:
                 joint.rp = joint.safe;
             break;
-            case JOINTAXIS_Z:
+            case Z:
                 joint.ry = joint.safe;
             break;
         }
         return true;
     }
     if (type == "translation") {
-        joint.type = JOINTTYPE_TRANSLATION;
+        joint.type = TRANSLATION;
         joint.axis = joint_axis_enum(node["axis"].as<string>());
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
@@ -93,44 +93,34 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
 
         switch (joint.axis) {
-            case JOINTAXIS_X:
+            case X:
                 joint.tx = joint.safe;
             break;
-            case JOINTAXIS_Y:
+            case Y:
                 joint.ty = joint.safe;
             break;
-            case JOINTAXIS_Z:
+            case Z:
                 joint.tz = joint.safe;
             break;
         }
         return true;
     }
     if (type == "fixed") {
-        joint.type = JOINTTYPE_FIXED;
-        joint.axis = JOINTAXIS_NONE;
+        joint.type = FIXED;
+        joint.axis = NONE;
         joint.tx = node["transform"]["tx"].as<float>();
         joint.ty = node["transform"]["ty"].as<float>();
         joint.tz = node["transform"]["tz"].as<float>();
         joint.rr = DEGREE_TO_RADIAN(node["transform"]["rr"].as<float>());
         joint.rp = DEGREE_TO_RADIAN(node["transform"]["rp"].as<float>());
         joint.ry = DEGREE_TO_RADIAN(node["transform"]["ry"].as<float>());
-        joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
-        joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
-        joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
         return true;
     }
     if (type == "gripper") {
-        joint.type = JOINTTYPE_GRIPPER;
-        joint.axis = JOINTAXIS_NONE;
-        joint.tx = node["transform"]["tx"].as<float>();
-        joint.ty = node["transform"]["ty"].as<float>();
-        joint.tz = node["transform"]["tz"].as<float>();
-        joint.rr = DEGREE_TO_RADIAN(node["transform"]["rr"].as<float>());
-        joint.rp = DEGREE_TO_RADIAN(node["transform"]["rp"].as<float>());
-        joint.ry = DEGREE_TO_RADIAN(node["transform"]["ry"].as<float>());
+        joint.type = GRIPPER;
+        joint.axis = NONE;
         joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
         joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
-        joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
         return true;
     }
     return false;
