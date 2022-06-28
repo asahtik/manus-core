@@ -203,6 +203,7 @@ ManipulatorManager::ManipulatorManager(SharedClient client, shared_ptr<Manipulat
 
     plan_listener = make_shared<TypedSubscriber<Plan> >(client, "plan",
     [this](shared_ptr<Plan> param) {
+        cout << "Subscriber callback" << endl;
         this->push(param);
     });
 
@@ -227,7 +228,6 @@ void ManipulatorManager::flush() {
 }
 
 void ManipulatorManager::push(shared_ptr<Plan> t) {
-    cout << "Called push function" << endl;
 
     ManipulatorDescription description = manipulator->describe();
 
