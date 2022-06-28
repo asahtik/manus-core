@@ -227,6 +227,7 @@ void ManipulatorManager::flush() {
 }
 
 void ManipulatorManager::push(shared_ptr<Plan> t) {
+    cout << "Called push function" << endl;
 
     ManipulatorDescription description = manipulator->describe();
 
