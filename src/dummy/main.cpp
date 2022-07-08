@@ -26,6 +26,7 @@ public:
 
 	virtual ManipulatorDescription describe();
 	virtual ManipulatorState state();
+    virtual void prepareNewGoal(bool begin_trajectory);
 
 private:
 
@@ -125,6 +126,10 @@ ManipulatorDescription SimulatedManipulator::describe() {
 ManipulatorState SimulatedManipulator::state() {
 
     return _state;
+
+}
+
+void SimulatedManipulator::prepareNewGoal(bool begin_trajectory) {
 
 }
 

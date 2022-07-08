@@ -168,10 +168,6 @@ JointState joint_state(const JointDescription& joint, float position, JointState
     return state;
 }
 
-void Manipulator::prepareNewGoal(bool begin_trajectory) {
-
-}
-
 bool close_enough(float a, float b) {
     return std::fabs(a - b) < 0.05;
 }
