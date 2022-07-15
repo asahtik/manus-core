@@ -58,3 +58,15 @@ programs:
             plan: manipulator0.plan
             planstate: manipulator0.planstate
             trajectory: manipulator0.trajectory
+    planner:
+        command: "manus_planner"
+        depends: [manipulator]
+        required: false
+        console: true
+        wait: 1
+        remap:
+            state: manipulator0.state
+            description: manipulator0.description
+            plan: manipulator0.plan
+            planstate: manipulator0.planstate
+            trajectory: manipulator0.trajectory
