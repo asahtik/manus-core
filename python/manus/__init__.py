@@ -128,18 +128,18 @@ class Manipulator(object):
 
             if self._description_data.joints[j].type == messages.JointType.ROTATION:
                 if self._description_data.joints[j].axis == messages.JointAxis.X:
-                    rr = self.state.joints[j].position
+                    rr = rr + self.state.joints[j].position
                 elif self._description_data.joints[j].axis == messages.JointAxis.Y:
-                    rp = self.state.joints[j].position
+                    rp = rp + self.state.joints[j].position
                 elif self._description_data.joints[j].axis == messages.JointAxis.Z:
-                    ry = self.state.joints[j].position
+                    ry = ry + self.state.joints[j].position
             elif self._description_data.joints[j].type == messages.JointType.TRANSLATION:
                 if self._description_data.joints[j].axis == messages.JointAxis.X:
-                    tx = self.state.joints[j].position
+                    tx = tx + self.state.joints[j].position
                 elif self._description_data.joints[j].axis == messages.JointAxis.Y:
-                    ty = self.state.joints[j].position
+                    ty = ty + self.state.joints[j].position
                 elif self._description_data.joints[j].axis == messages.JointAxis.Z:
-                    tz = self.state.joints[j].position
+                    tz = tz + self.state.joints[j].position
 
             ca1 = np.cos(ry)
             sa1 = np.sin(ry)

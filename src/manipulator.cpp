@@ -65,18 +65,6 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
         joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
-
-        switch (joint.axis) {
-            case JOINTAXIS_X:
-                joint.rr = joint.safe;
-            break;
-            case JOINTAXIS_Y:
-                joint.rp = joint.safe;
-            break;
-            case JOINTAXIS_Z:
-                joint.ry = joint.safe;
-            break;
-        }
         return true;
     }
     if (type == "translation") {
@@ -91,18 +79,6 @@ bool parse_joint(const YAML::Node& node, JointDescription& joint) {
         joint.min = DEGREE_TO_RADIAN(node["min"].as<float>());
         joint.max = DEGREE_TO_RADIAN(node["max"].as<float>());
         joint.safe = DEGREE_TO_RADIAN(node["safe"].as<float>());
-
-        switch (joint.axis) {
-            case JOINTAXIS_X:
-                joint.tx = joint.safe;
-            break;
-            case JOINTAXIS_Y:
-                joint.ty = joint.safe;
-            break;
-            case JOINTAXIS_Z:
-                joint.tz = joint.safe;
-            break;
-        }
         return true;
     }
     if (type == "fixed") {
