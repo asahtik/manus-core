@@ -52,20 +52,20 @@ protected:
 		if (joint.type == JOINTTYPE_ROTATION) {
 			switch (joint.axis) {
 				case JOINTAXIS_X:
-					return Segment(Joint(Joint::RotX, 1, joint.rr), Frame(Rotation::RPY(0.0, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
+					return Segment(Joint(Joint::RotX), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
 				case JOINTAXIS_Y:
-					return Segment(Joint(Joint::RotY, 1, joint.rp), Frame(Rotation::RPY(joint.rr, 0.0, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
+					return Segment(Joint(Joint::RotY), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
 				case JOINTAXIS_Z:
-					return Segment(Joint(Joint::RotZ, 1, joint.ry), Frame(Rotation::RPY(joint.rr, joint.rp, 0.0), Vector(joint.tx, joint.ty, joint.tz)));
+					return Segment(Joint(Joint::RotZ), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
 			}
 		} else if (joint.type == JOINTTYPE_TRANSLATION) {
 			switch (joint.axis) {
 				case JOINTAXIS_X:
-					return Segment(Joint(Joint::TransX, 1, joint.tx), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(0.0, joint.ty, joint.tz)));
+					return Segment(Joint(Joint::TransX), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
 				case JOINTAXIS_Y:
-					return Segment(Joint(Joint::TransY, 1, joint.ty), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, 0.0, joint.tz)));
+					return Segment(Joint(Joint::TransY), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
 				case JOINTAXIS_Z:
-					return Segment(Joint(Joint::TransZ, 1, joint.tz), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, 0.0)));
+					return Segment(Joint(Joint::TransZ), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
 			}
 		} 
 		return Segment(Joint(Joint::None), Frame(Rotation::RPY(joint.rr, joint.rp, joint.ry), Vector(joint.tx, joint.ty, joint.tz)));
