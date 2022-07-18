@@ -115,7 +115,7 @@ protected:
 
 		limits_min = JntArray(lmin.size());
 		limits_max = JntArray(lmax.size());
-		safe = JntArray(lmax.size());
+		safe = JntArray(spos.size());
 
 		for (size_t j = 0; j < lmin.size(); j++) {
 			limits_min(j) = lmin[j];
