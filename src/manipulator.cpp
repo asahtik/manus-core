@@ -118,6 +118,23 @@ bool parse_description(const string& filename, ManipulatorDescription& manipulat
         manipulator.joints.push_back(d);
     }
 
+    const YAML::Node& frame = doc["frame"];
+    if (frame.IsDefined()) {
+        manipulator.frame.origin.x = frame["tx"].as<float>();
+        manipulator.frame.origin.y = frame["ty"].as<float>();
+        manipulator.frame.origin.z = frame["tz"].as<float>();
+        manipulator.frame.rotation.x = DEGREE_TO_RADIAN(frame["rr"].as<float>());
+        manipulator.frame.rotation.y = DEGREE_TO_RADIAN(frame["rp"].as<float>());
+        manipulator.frame.rotation.z = DEGREE_TO_RADIAN(frame["ry"].as<float>());
+    } else {
+        manipulator.frame.tx = 0.0;
+        manipulator.frame.ty = 0.0;
+        manipulator.frame.tz = 0.0;
+        manipulator.frame.rr = 0.0;
+        manipulator.frame.rp = 0.0;
+        manipulator.frame.ry = 0.0;
+    }
+
     return true;
 }
 
