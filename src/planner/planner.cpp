@@ -79,7 +79,7 @@ protected:
 		vector<float> lmax;
 		vector<float> spos;
 
-		KDL::Rotation rotation = KDL::Rotation::Identity().RotX(desc->frame.rotation.x).RotY(desc->frame.rotation.y).RotZ(desc->frame.rotation.z);
+		KDL::Rotation rotation = KDL::Rotation::RPY(desc->frame.rotation.x, desc->frame.rotation.y, desc->frame.rotation.z);
 		origin = KDL::Frame(rotation, KDL::Vector(desc->frame.origin.x, desc->frame.origin.y, desc->frame.origin.z));
 
 		origin = origin.Inverse();
