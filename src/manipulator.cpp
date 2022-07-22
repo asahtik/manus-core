@@ -127,12 +127,12 @@ bool parse_description(const string& filename, ManipulatorDescription& manipulat
         manipulator.frame.rotation.y = DEGREE_TO_RADIAN(frame["rp"].as<float>());
         manipulator.frame.rotation.z = DEGREE_TO_RADIAN(frame["ry"].as<float>());
     } else {
-        manipulator.frame.tx = 0.0;
-        manipulator.frame.ty = 0.0;
-        manipulator.frame.tz = 0.0;
-        manipulator.frame.rr = 0.0;
-        manipulator.frame.rp = 0.0;
-        manipulator.frame.ry = 0.0;
+        manipulator.frame.origin.x = 0;
+        manipulator.frame.origin.y = 0;
+        manipulator.frame.origin.z = 0;
+        manipulator.frame.rotation.x = 0;
+        manipulator.frame.rotation.y = 0;
+        manipulator.frame.rotation.z = 0;
     }
 
     return true;
