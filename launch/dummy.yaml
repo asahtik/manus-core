@@ -8,7 +8,6 @@ log: "/var/log/manus/"
 environment:
     MANUS_ROOT: "/usr/local"
     ECHOLIB_SOCKET: "/tmp/echo.sock"
-    APPS_PATH: "${MANUS_ROOT}/share/manus/apps"
 plugins:
     - wait
     - debug
@@ -71,7 +70,3 @@ programs:
             plan: manipulator0.plan
             planstate: manipulator0.planstate
             trajectory: manipulator0.trajectory
-    applications:
-        command: "python3 -u -m manus_apps"
-        restart: true
-        depends: [echo]
