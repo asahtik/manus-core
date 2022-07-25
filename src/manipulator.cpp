@@ -220,7 +220,7 @@ void ManipulatorManager::push(shared_ptr<Plan> t) {
     ManipulatorDescription description = manipulator->describe();
 
     cout << "Received new plan" << endl;
-
+    manipulator->prepareNewGoal(true);
     for (size_t s = 0; s < t->segments.size(); s++) {
         // Move to safe position if no joint given
         if (t->segments[s].joints.size() == 0) {
@@ -306,6 +306,7 @@ void ManipulatorManager::step(bool force) {
     }
 
     if (goal || force) {
+        manipulator->prepareNewGoal(false);
         int planSize = plan->segments.size();
         if (planSize == 0) {
             PlanState state;
@@ -314,16 +315,13 @@ void ManipulatorManager::step(bool force) {
             planstate_publisher->send(state);
             plan.reset();
 
-            lastPlanSize = 0;
             return;
         }
 
-        manipulator->prepareNewGoal(lastPlanSize == 0);
         for (size_t i = 0; i < manipulator->size(); i++) {
             manipulator->move(i, plan->segments[0].joints[i].goal, plan->segments[0].joints[i].speed);
         }
 
-        lastPlanSize = planSize;
         plan->segments.erase(plan->segments.begin());
     }
 

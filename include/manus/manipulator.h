@@ -84,9 +84,6 @@ private:
     SharedTypedPublisher<PlanState> planstate_publisher;
     shared_ptr<StaticPublisher<ManipulatorDescription> > description_publisher;
     SharedTypedSubscriber<Plan> plan_listener;
-
-    volatile int lastPlanSize = 0;
-
 };
 
 #endif
