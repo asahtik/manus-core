@@ -29,8 +29,6 @@ public:
 
 	virtual ManipulatorDescription describe() = 0;
 	virtual ManipulatorState state() = 0;
-
-    virtual void prepareNewGoal(bool begin_trajectory) = 0;
 };
 
 class ManipulatorException : public std::runtime_error
